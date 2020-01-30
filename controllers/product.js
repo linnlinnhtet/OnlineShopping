@@ -7,16 +7,19 @@ exports.getAddProduct = (req, res, next) => {
 };
 
 exports.postAddProduct = (req, res, next) => {
-    const product = new Product(req.body.title);
+    const title = req.body.title;
+    const product = new Product(title);
     product.save();
     res.redirect('/');
 }
 
 exports.getProducts = (req, res, next) => {
-    const products = Product.fetchAll();
-    res.render('shop', {
-        pageTitle: 'Shop',
-        path: '/',
-        prods: products
+    Product.fetchAll((cb) => {
+        res.render('shop', {
+            pageTitle: 'Shop',
+            path: '/',
+            prods: cb
+        });
     });
+
 }
